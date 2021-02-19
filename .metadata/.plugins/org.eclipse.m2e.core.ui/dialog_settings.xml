@@ -41,7 +41,7 @@
 	</section>
 	<section name="Maven2ProjectWizardArchifactPage">
 		<list key="package">
-			<item value="com.paypal.bfs.test"/>
+			<item value="org."/>
 		</list>
 		<list key="groupId">
 			<item value="com.paypal.bfs.test"/>
@@ -67,7 +67,7 @@
 		<list key="name">
 		</list>
 		<list key="artifactId">
-			<item value="employeeservFunctionalTests"/>
+			<item value="employeeservImplementation"/>
 		</list>
 		<list key="projectNameTemplate">
 			<item value="[artifactId]"/>
@@ -80,5 +80,11 @@
 		<list key="version">
 			<item value="0.0.1-SNAPSHOT"/>
 		</list>
+	</section>
+	<section name="org.eclipse.m2e.core.ui.internal.wizards.MavenProjectSelectionDialog">
+		<item key="width" value="480"/>
+		<item key="height" value="450"/>
+		<item key="x" value="443"/>
+		<item key="y" value="0"/>
 	</section>
 </section>

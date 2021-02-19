@@ -1,5 +1,7 @@
 package com.paypal.bfs.test.employeeserv.test;
 
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -13,6 +15,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -55,13 +59,19 @@ public class EmployeeTest {
 			employee.setAddress(addresses);
 			
 			ObjectMapper mapper = new ObjectMapper();
-		    mockMvc.perform(
+			MvcResult result = mockMvc.perform(
 		            MockMvcRequestBuilders.post("/v1/bfs/employees")
 		                    .contentType(MediaType.APPLICATION_JSON)
 		                    .content(mapper.writeValueAsString(employee)))
-		            .andExpect(status().isCreated());
+		            .andExpect(status().isCreated())
+		            .andExpect(MockMvcResultMatchers.jsonPath("$.first_name").value("firstName"))
+		            .andReturn();
 		    
-			this.mockMvc.perform(MockMvcRequestBuilders.get("/v1/bfs/employees/1")).andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());
+			employee = mapper.readValue(result.getResponse().getContentAsString(), Employee.class);
+			
+			this.mockMvc.perform(MockMvcRequestBuilders.get("/v1/bfs/employees/"+employee.getId()))
+			.andDo(MockMvcResultHandlers.print())
+			.andExpect(MockMvcResultMatchers.status().isOk());
 			
 		} catch(Exception e) {
 			e.printStackTrace();

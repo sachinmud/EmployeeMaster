@@ -4,6 +4,8 @@ import com.paypal.bfs.test.employeeserv.api.EmployeeResource;
 import com.paypal.bfs.test.employeeserv.api.model.Employee;
 import com.paypal.bfs.test.employeeserv.service.EmployeeService;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

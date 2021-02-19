@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,7 +52,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employee;
 	}
 	
-	public Employee createEmployee(Employee employee) {
+	public Employee createEmployee(@Valid Employee employee) {
 		try {
 			EmployeeEntity empEntity = new EntityUtil<Employee, EmployeeEntity>().copyProperties(employee, new EmployeeEntity());
 			empEntity.setDateOfBirth(dtFormat.parse(employee.getDateOfBirth()));

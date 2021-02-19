@@ -12,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,12 +33,16 @@ public class EmployeeEntity implements Serializable {
 	private Integer id;
 	
 	@Column(name = "FIRSTNAME", length = 255, nullable = false)
+	@NotEmpty
+	@Size(max = 255)
 	private String firstName;
 	
 	@Column(name = "LASTNAME", length = 255, nullable = false)
+	@NotEmpty
+	@Size(max = 255)
 	private String lastName;
 	
-	@Column(name = "DATEOFBIRTH", length = 10, nullable = true)
+	@Column(name = "DATEOFBIRTH", nullable = true)
 	private Date dateOfBirth;
 	
 }
