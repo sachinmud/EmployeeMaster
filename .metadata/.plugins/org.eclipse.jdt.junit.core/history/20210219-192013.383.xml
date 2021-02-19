@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="EmployeeTest.testCreateAndGetUser" project="employeeservFunctionalTests" tests="1" started="1" failures="0" errors="0" ignored="0">
+  <testsuite name="com.paypal.bfs.test.employeeserv.test.EmployeeTest" incomplete="true" displayname="EmployeeTest" uniqueid="[engine:junit-jupiter]/[class:com.paypal.bfs.test.employeeserv.test.EmployeeTest]">
+    <testcase name="testCreateAndGetUser" classname="com.paypal.bfs.test.employeeserv.test.EmployeeTest" incomplete="true" displayname="testCreateAndGetUser()" uniqueid="[engine:junit-jupiter]/[class:com.paypal.bfs.test.employeeserv.test.EmployeeTest]/[method:testCreateAndGetUser()]"/>
+  </testsuite>
+</testrun>

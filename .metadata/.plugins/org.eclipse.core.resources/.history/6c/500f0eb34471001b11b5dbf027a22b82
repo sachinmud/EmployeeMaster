@@ -1,0 +1,24 @@
+package com.paypal.bfs.test.employeeserv.service.impl;
+
+import org.springframework.stereotype.Service;
+
+import com.paypal.bfs.test.employeeserv.api.model.Employee;
+import com.paypal.bfs.test.employeeserv.dao.EmployeeRepository;
+import com.paypal.bfs.test.employeeserv.domain.EmployeeEntity;
+import com.paypal.bfs.test.employeeserv.service.EmployeeService;
+import com.paypal.bfs.test.employeeserv.utils.EntityUtil;
+
+@Service
+public class EmployeeServiceImpl implements EmployeeService {
+
+	private EmployeeRepository repository;
+
+	public Employee getEmployee(String employeeId) {
+		try {
+			EmployeeEntity empEntity = repository.getOne(Long.parseLong(employeeId));
+			Employee employee = new EntityUtil<EmployeeEntity, Employee>().copyProperties(empEntity,  new Employee());
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+}

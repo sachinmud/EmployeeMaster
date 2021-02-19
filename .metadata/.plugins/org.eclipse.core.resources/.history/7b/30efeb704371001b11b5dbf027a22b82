@@ -1,0 +1,17 @@
+package com.paypal.bfs.test.employeeserv.utils;
+
+import org.springframework.beans.BeanUtils;
+
+public class EntityUtil<U, M> {
+	
+	private static U u;
+	private static M m;
+	
+	public static M copyProperties(U u, M m) {
+		
+		BeanUtils.copyProperties(u, m);
+		return m;
+		
+	}
+
+}

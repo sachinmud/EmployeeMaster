@@ -1,0 +1,9 @@
+com\paypal\bfs\test\employeeserv\service\EmployeeService.class
+com\paypal\bfs\test\employeeserv\EmployeeservApplication.class
+com\paypal\bfs\test\employeeserv\dao\AddressRepository.class
+com\paypal\bfs\test\employeeserv\utils\EntityUtil.class
+com\paypal\bfs\test\employeeserv\domain\AddressEntity.class
+com\paypal\bfs\test\employeeserv\service\impl\EmployeeServiceImpl.class
+com\paypal\bfs\test\employeeserv\dao\EmployeeRepository.class
+com\paypal\bfs\test\employeeserv\impl\EmployeeResourceImpl.class
+com\paypal\bfs\test\employeeserv\domain\EmployeeEntity.class

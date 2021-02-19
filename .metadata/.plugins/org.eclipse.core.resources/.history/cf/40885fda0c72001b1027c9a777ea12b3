@@ -1,0 +1,21 @@
+package com.paypal.bfs.test.employeeserv;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import com.paypal.bfs.test.employeeserv.api.model.Employee;
+import com.paypal.bfs.test.employeeserv.service.impl.EmployeeServiceImpl;
+
+@RunWith(MockitoJUnitRunner.class)
+public class EmployeeTest {
+
+	@InjectMocks
+	EmployeeServiceImpl service;
+	
+	@Test
+	public void testGetEmployee() {
+		Employee employee = service.getEmployee("1");
+	}
+}

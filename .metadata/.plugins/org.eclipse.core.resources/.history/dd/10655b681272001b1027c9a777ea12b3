@@ -1,0 +1,68 @@
+package com.paypal.bfs.test.employeeserv.service.impl;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.paypal.bfs.test.employeeserv.api.model.Address;
+import com.paypal.bfs.test.employeeserv.api.model.Employee;
+import com.paypal.bfs.test.employeeserv.dao.AddressRepository;
+import com.paypal.bfs.test.employeeserv.dao.EmployeeRepository;
+import com.paypal.bfs.test.employeeserv.domain.AddressEntity;
+import com.paypal.bfs.test.employeeserv.domain.EmployeeEntity;
+import com.paypal.bfs.test.employeeserv.service.EmployeeService;
+import com.paypal.bfs.test.employeeserv.utils.EntityUtil;
+
+@Service
+public class EmployeeServiceImpl implements EmployeeService {
+
+	private EmployeeRepository empRepository;
+	
+	private AddressRepository addrRepository;
+
+	SimpleDateFormat dtFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+	public Employee getEmployee(String employeeId) {
+		
+		Employee employee = null;
+		
+		try {
+			EmployeeEntity empEntity = empRepository.getOne(Integer.parseInt(employeeId));
+			employee = new EntityUtil<EmployeeEntity, Employee>().copyProperties(empEntity,  new Employee());
+			List<AddressEntity> addressEntities = addrRepository.findByEmployeeId(empEntity.getId());
+			List<Address> addresses = new ArrayList<Address>();
+			addressEntities.forEach(a -> {
+				Address address = new EntityUtil<AddressEntity, Address>().copyProperties(a, new Address());
+				addresses.add(address);
+			});
+			employee.setAddress(addresses);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return employee;
+	}
+	
+	public Employee createEmployee(Employee employee) {
+		try {
+			final EmployeeEntity empEntity = new EntityUtil<Employee, EmployeeEntity>().copyProperties(employee, new EmployeeEntity());
+			empEntity.setDateOfBirth(dtFormat.parse(employee.getDateOfBirth()));
+			empRepository.save(empEntity);
+			employee.setId(empEntity.getId());
+			employee.getAddress().forEach(a -> {
+				AddressEntity addrEntity = new EntityUtil<Address, AddressEntity>().copyProperties(a, new AddressEntity());
+				addrEntity.setEmployee(empEntity);
+				addrRepository.save(addrEntity);
+			});
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return employee;
+	}
+}

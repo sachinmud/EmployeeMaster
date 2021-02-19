@@ -1,0 +1,60 @@
+package com.paypal.bfs.test.employeeserv;
+
+import static org.junit.Assert.assertNotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.paypal.bfs.test.employeeserv.api.model.Address;
+import com.paypal.bfs.test.employeeserv.api.model.Employee;
+import com.paypal.bfs.test.employeeserv.dao.AddressRepository;
+import com.paypal.bfs.test.employeeserv.dao.EmployeeRepository;
+import com.paypal.bfs.test.employeeserv.service.impl.EmployeeServiceImpl;
+
+@SpringBootTest
+public class EmployeeTest {
+
+	@Autowired
+	EmployeeRepository empRepository;
+	
+	@Autowired
+	AddressRepository addrRepository;
+	
+	private Integer employeeId;
+	
+	@Test
+	public void testCreateEmployee() {
+		Address address = new Address();
+		address.setLine1("line1");
+		address.setCity("city");
+		address.setCountry("country");
+		address.setState("state");
+		address.setZipcode("zipcode");
+		
+		Employee employee = new Employee();
+		employee.setFirstName("firstName");
+		employee.setLastName("lastName");
+		employee.setDateOfBirth("10/02/2021");
+		List<Address> addresses = new ArrayList<Address>();
+		addresses.add(address);
+		employee.setAddress(addresses);
+		
+		employee = empRepository.save(employee);
+		assertNotNull(employee);
+		employeeId = employee.getId();
+	}
+	
+	@Test
+	public void testGetEmployee() {
+		Employee employee = service.getEmployee(String.valueOf(employeeId));
+		assertNotNull(employee);
+	}
+}

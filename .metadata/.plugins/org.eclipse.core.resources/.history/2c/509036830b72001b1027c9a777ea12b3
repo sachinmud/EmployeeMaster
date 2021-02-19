@@ -1,0 +1,6 @@
+package com.paypal.bfs.test.employeeserv;
+
+@RunWith(MockitoJUnitRunner.class)
+public class EmployeeTest {
+
+}
