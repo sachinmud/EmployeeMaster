@@ -1,7 +1,0 @@
-package com.paypal.bfs.test.employeeserv.service.impl;
-
-import com.paypal.bfs.test.employeeserv.service.EmployeeService;
-
-public class EmployeeServiceImpl implements EmployeeService {
-
-}
