@@ -1,9 +1,0 @@
-package com.paypal.bfs.test.employeeserv.dao;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.paypal.bfs.test.employeeserv.domain.AddressEntity;
-
-public interface AddressRepository extends JpaRepository<AddressEntity, Long>{
-
-}

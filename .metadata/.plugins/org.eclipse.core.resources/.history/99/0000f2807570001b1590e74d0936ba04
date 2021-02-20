@@ -1,7 +1,0 @@
-{
-  "title": "Employee resource",
-  "description": "Employee resource object",
-  "type": "object",
-	"properties": {
-	}
-}
