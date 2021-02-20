@@ -3,3 +3,4 @@
 .metadata/
 *.class
 **/target
+.metadata/.log
