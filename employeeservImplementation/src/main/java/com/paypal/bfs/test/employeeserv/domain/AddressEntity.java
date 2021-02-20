@@ -34,7 +34,7 @@ public class AddressEntity implements Serializable {
 	private Integer id;
 	
 	@Column(name = "LINE1", length = 255, nullable = false)
-	@NotEmpty
+	@NotEmpty(message = "{line1.notempty}")
 	@Size(max = 255)
 	private String line1;
 	

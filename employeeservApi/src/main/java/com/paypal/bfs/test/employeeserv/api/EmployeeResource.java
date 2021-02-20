@@ -19,12 +19,12 @@ public interface EmployeeResource {
      * @return {@link Employee} resource.
      */
     @GetMapping(value = "/v1/bfs/employees/{id}")
-    ResponseEntity<Employee> employeeGetById(@PathVariable("id") String id);
+    ResponseEntity<Employee> employeeGetById(@PathVariable("id") String id) throws Exception;
 
     // ----------------------------------------------------------
     // TODO - add a new operation for creating employee resource.
     // ----------------------------------------------------------
     @PostMapping("/v1/bfs/employees")
-    ResponseEntity<Employee> createEmployee(@RequestBody Employee employee);
+    ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) throws Exception;
 
 }

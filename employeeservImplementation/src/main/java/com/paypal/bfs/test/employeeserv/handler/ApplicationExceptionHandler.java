@@ -5,8 +5,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -21,6 +24,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.paypal.bfs.test.employeeserv.exception.InternalServerErrorException;
+import com.paypal.bfs.test.employeeserv.exception.ResourceAlreadyExistsException;
 import com.paypal.bfs.test.employeeserv.exception.ResourceNotFoundException;
 import com.paypal.bfs.test.employeeserv.exception.vo.ErrorDetail;
 import com.paypal.bfs.test.employeeserv.exception.vo.ValidationError;
@@ -43,33 +48,48 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 		
 		return new ResponseEntity<>(errorDetail, null, HttpStatus.NOT_FOUND);
 	}	
-	
-	@Override
-	public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException manve, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+	@ExceptionHandler(ResourceAlreadyExistsException.class)
+	public ResponseEntity<?> handleResourceNotFoundException(ResourceAlreadyExistsException rae, HttpServletRequest request) {
+		
+		ErrorDetail errorDetail = new ErrorDetail();
+		errorDetail.setTimeStamp(dtFormat.format(new Date()));
+		errorDetail.setTitle("Resource already exists");
+		errorDetail.setDetail(rae.getMessage());
+		
+		return new ResponseEntity<>(errorDetail, null, HttpStatus.CONFLICT);
+	}	
+
+	@ExceptionHandler(InternalServerErrorException.class)
+	public ResponseEntity<?> handleResourceNotFoundException(InternalServerErrorException ise, HttpServletRequest request) {
+		
+		ErrorDetail errorDetail = new ErrorDetail();
+		errorDetail.setTimeStamp(dtFormat.format(new Date()));
+		errorDetail.setTitle("Internal Server Error");
+		errorDetail.setDetail(ise.getMessage());
+		
+		return new ResponseEntity<>(errorDetail, null, HttpStatus.INTERNAL_SERVER_ERROR);
+	}	
+
+	@ExceptionHandler(ConstraintViolationException.class)
+	public ResponseEntity<?> handleConstraintViolationException(ConstraintViolationException cve, HttpServletRequest request) {
 		
 		ErrorDetail errorDetail = new ErrorDetail();
 		errorDetail.setTimeStamp(dtFormat.format(new Date()));
 		errorDetail.setTitle("Validation Failed");
 		errorDetail.setDetail("Input validation failed");
+		List<String> fieldErrors = new ArrayList<>(cve.getConstraintViolations().size());
+		Set<ConstraintViolation<?>> validationErrors = cve.getConstraintViolations();
 		
-		// Create ValidationError instances
-		List<FieldError> fieldErrors =  manve.getBindingResult().getFieldErrors();
-		for(FieldError fe : fieldErrors) {
-			
-			List<ValidationError> validationErrorList = errorDetail.getErrors().get(fe.getField());
-			if(validationErrorList == null) {
-				validationErrorList = new ArrayList<ValidationError>();
-				errorDetail.getErrors().put(fe.getField(), validationErrorList);
-			}
-			ValidationError validationError = new ValidationError();
-			validationError.setCode(fe.getCode());
-			validationError.setMessage(messageSource.getMessage(fe, null));
-			validationErrorList.add(validationError);
-		}
+		validationErrors.forEach(e -> {
+			fieldErrors.add(e.getMessage());
+		});
 		
-		return handleExceptionInternal(manve, errorDetail, headers, status, request);
-	}
-	
+		errorDetail.setFieldErrors(fieldErrors);
+	 	
+		return new ResponseEntity<>(errorDetail, null, HttpStatus.BAD_REQUEST);
+	}	
+
 	@Override
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(
 			HttpMessageNotReadableException ex, HttpHeaders headers,

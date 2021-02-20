@@ -22,14 +22,14 @@ public class EmployeeResourceImpl implements EmployeeResource {
 	EmployeeService service;
 	
     @Override
-    public ResponseEntity<Employee> employeeGetById(String id) {
+    public ResponseEntity<Employee> employeeGetById(String id) throws Exception {
 
     	Employee employee = service.getEmployee(id);
         return new ResponseEntity<>(employee, HttpStatus.OK);
     }
     
     @Override
-    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
+    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) throws Exception {
     	employee = service.createEmployee(employee);
         return new ResponseEntity<>(employee, HttpStatus.CREATED);
     	
