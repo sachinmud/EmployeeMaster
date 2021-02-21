@@ -1,4 +1,4 @@
-package com.paypal.bfs.test.employeeserv.test;
+package com.paypal.bfs.test.employeeserv;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -7,12 +7,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -26,7 +29,7 @@ import com.paypal.bfs.test.employeeserv.api.model.Address;
 import com.paypal.bfs.test.employeeserv.api.model.Employee;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = EmployeeservApplication.class)
 @AutoConfigureMockMvc
 public class EmployeeTest {
 
@@ -45,7 +48,7 @@ public class EmployeeTest {
 	
 	ObjectMapper mapper;
 
-	@org.junit.Before
+	@Before
 	public void setup() {
 		mapper = new ObjectMapper();
 		mapper.registerModule(new JavaTimeModule());
