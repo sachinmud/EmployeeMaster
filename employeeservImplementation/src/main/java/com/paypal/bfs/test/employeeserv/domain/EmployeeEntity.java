@@ -1,6 +1,7 @@
 package com.paypal.bfs.test.employeeserv.domain;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -43,6 +44,6 @@ public class EmployeeEntity implements Serializable {
 	
 	@Column(name = "DATEOFBIRTH", nullable = true)
 	@Past(message = "{dateOfBirth.past}")
-	private Date dateOfBirth;
+	private LocalDate dateOfBirth;
 	
 }

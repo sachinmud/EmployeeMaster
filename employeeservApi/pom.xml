@@ -61,8 +61,8 @@
 					<useJodaLocalDates>false</useJodaLocalDates>
 					<includeJsr303Annotations>false</includeJsr303Annotations>
 					<includeAdditionalProperties>false</includeAdditionalProperties>
-					<dateTimeType>java.util.Date</dateTimeType>
-					<dateType>java.util.Date</dateType>
+					<dateTimeType>java.time.LocalDate</dateTimeType>
+					<dateType>java.time.LocalDate</dateType>
 					<generateBuilders>true</generateBuilders>
                 </configuration>
                 <executions>

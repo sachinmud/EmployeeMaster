@@ -3,6 +3,8 @@ package com.paypal.bfs.test.employeeserv.test;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +22,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.paypal.bfs.test.employeeserv.api.model.Address;
 import com.paypal.bfs.test.employeeserv.api.model.Employee;
 
@@ -39,16 +42,17 @@ public class EmployeeTest {
 	Employee employeeInvalid;
 	
 	Employee employeeWithInvalidAddress;
+	
+	ObjectMapper mapper;
 
 	@BeforeEach
 	public void setup() {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-		Date birthDate = null;
-		try {
-			birthDate = sdf.parse("22-01-1990");
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+		mapper = new ObjectMapper();
+		mapper.registerModule(new JavaTimeModule());
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate birthDate = LocalDate.parse("2001-10-11", formatter);
+
 		Address address = new Address();
 		address.setLine1("line1");
 		address.setCity("city");
@@ -99,7 +103,7 @@ public class EmployeeTest {
 	public void testCreateAndGetEmployee() {
 		try {
 			
-			ObjectMapper mapper = new ObjectMapper();
+			String test = mapper.writeValueAsString(employee);
 			MvcResult result = mockMvc.perform(
 		            MockMvcRequestBuilders.post("/v1/bfs/employees")
 		                    .contentType(MediaType.APPLICATION_JSON)
@@ -123,7 +127,6 @@ public class EmployeeTest {
 	public void testCreateAndGetEmployeeWithoutAddress() {
 		try {
 			
-			ObjectMapper mapper = new ObjectMapper();
 			MvcResult result = mockMvc.perform(
 		            MockMvcRequestBuilders.post("/v1/bfs/employees")
 		                    .contentType(MediaType.APPLICATION_JSON)
@@ -147,7 +150,6 @@ public class EmployeeTest {
 	public void testCreateInvalidEmployee() {
 		try {
 			
-			ObjectMapper mapper = new ObjectMapper();
 			mockMvc.perform(
 		            MockMvcRequestBuilders.post("/v1/bfs/employees")
 		                    .contentType(MediaType.APPLICATION_JSON)
@@ -163,7 +165,6 @@ public class EmployeeTest {
 	public void testCreateEmployeeWithInvalidAddress() {
 		try {
 			
-			ObjectMapper mapper = new ObjectMapper();
 			mockMvc.perform(
 		            MockMvcRequestBuilders.post("/v1/bfs/employees")
 		                    .contentType(MediaType.APPLICATION_JSON)
@@ -193,7 +194,6 @@ public class EmployeeTest {
 	public void testDuplicateEmployeeCreation() {
 		try {
 			
-			ObjectMapper mapper = new ObjectMapper();
 			mockMvc.perform(
 		            MockMvcRequestBuilders.post("/v1/bfs/employees")
 		                    .contentType(MediaType.APPLICATION_JSON)

@@ -10,6 +10,6 @@ import com.paypal.bfs.test.employeeserv.domain.AddressEntity;
 
 public interface AddressRepository extends JpaRepository<AddressEntity, Integer>
 {
-	@Query(value = "select * from address where addressid = :addressId", nativeQuery = true)
-	List<AddressEntity> findByEmployeeId(@Param("addressId") Integer addressId);
+	@Query(value = "select * from address where employeeid = :employeeId", nativeQuery = true)
+	List<AddressEntity> findByEmployeeId(@Param("employeeId") Integer employeeId);
 }
