@@ -35,31 +35,31 @@ public class AddressEntity implements Serializable {
 	
 	@Column(name = "LINE1", length = 255, nullable = false)
 	@NotEmpty(message = "{line1.notempty}")
-	@Size(max = 255)
+	@Size(max = 255, message = "{line1.size}")
 	private String line1;
 	
 	@Column(name = "LINE2", length = 255, nullable = true)
-	@Size(max = 255)
+	@Size(max = 255, message = "{line2.size}")
 	private String line2;
 	
 	@Column(name = "CITY", length = 150, nullable = false)
-	@NotEmpty
-	@Size(max = 150)
+	@NotEmpty(message = "{city.notempty}")
+	@Size(max = 150, message = "{city.size}")
 	private String city;
 	
 	@Column(name = "STATE", length = 150, nullable = false)
-	@NotEmpty
-	@Size(max = 150)
+	@NotEmpty(message = "{state.notempty}")
+	@Size(max = 150, message = "{state.size}")
 	private String state;
 	
 	@Column(name = "COUNTRY", length = 150, nullable = false)
-	@NotEmpty
-	@Size(max = 150)
+	@NotEmpty(message = "{country.notempty}")
+	@Size(max = 150, message = "{country.size}")
 	private String country;
 	
 	@Column(name = "ZIPCODE", length = 150, nullable = false)
-	@NotEmpty
-	@Size(max = 150)
+	@NotEmpty(message = "{zipcode.notempty}")
+	@Size(max = 10, message = "{zipcode.size}")
 	private String zipcode;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

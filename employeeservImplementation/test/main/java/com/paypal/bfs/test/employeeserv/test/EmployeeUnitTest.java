@@ -1,6 +1,8 @@
-package com.paypal.bfs.test.employeeserv;
+package com.paypal.bfs.test.employeeserv.test;
 
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,8 +26,9 @@ import com.paypal.bfs.test.employeeserv.domain.AddressEntity;
 import com.paypal.bfs.test.employeeserv.domain.EmployeeEntity;
 import com.paypal.bfs.test.employeeserv.service.impl.EmployeeServiceImpl;
 
+@RunWith(SpringRunner.class)
 @DataJpaTest
-public class EmployeeTest {
+public class EmployeeUnitTest {
 
 	@Autowired
 	EmployeeRepository empRepository;
@@ -52,6 +55,7 @@ public class EmployeeTest {
 		employee = empRepository.save(employee);
 		assertNotNull(employee);
 		employeeId = employee.getId();
+		assertTrue(employeeId > 0);
 	}
 	
 }

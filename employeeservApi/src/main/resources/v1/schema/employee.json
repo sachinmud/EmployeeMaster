@@ -22,8 +22,8 @@
 		"date_of_birth": {
 	      "description": "date of birth",
 	      "type": "string",
-	      "minLength": 10,
-	      "maxLength": 10
+	      "format": "date",
+	      "customDatePattern": "yyyy-MM-dd"
 		},
 		"address": {
 			"title": "Address", 

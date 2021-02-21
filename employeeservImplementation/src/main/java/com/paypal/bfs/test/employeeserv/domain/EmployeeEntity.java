@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
 
@@ -32,15 +33,16 @@ public class EmployeeEntity implements Serializable {
 	
 	@Column(name = "FIRSTNAME", length = 255, nullable = false)
 	@NotEmpty(message = "{firstname.notempty}")
-	@Size(max = 255)
+	@Size(max = 255, message = "{firstname.size}")
 	private String firstName;
 	
 	@Column(name = "LASTNAME", length = 255, nullable = false)
 	@NotEmpty(message = "{lastname.notempty}")
-	@Size(max = 255)
+	@Size(max = 255, message = "{lastname.size}")
 	private String lastName;
 	
 	@Column(name = "DATEOFBIRTH", nullable = true)
+	@Past(message = "{dateOfBirth.past}")
 	private Date dateOfBirth;
 	
 }

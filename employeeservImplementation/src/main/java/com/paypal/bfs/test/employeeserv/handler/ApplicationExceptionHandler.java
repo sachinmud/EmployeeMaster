@@ -103,4 +103,22 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 		return handleExceptionInternal(ex, errorDetail, headers, status, request);
 	}
 
+	@Override
+	public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException manve, HttpHeaders headers, HttpStatus status, WebRequest request) {
+		
+		ErrorDetail errorDetail = new ErrorDetail();
+		// Populate errorDetail instance
+		errorDetail.setTimeStamp(dtFormat.format(new Date()));
+		errorDetail.setTitle("Validation Failed");
+		errorDetail.setDetail("Input validation failed");
+		
+		// Create ValidationError instances
+		List<FieldError> fieldErrors =  manve.getBindingResult().getFieldErrors();
+		List<String> fieldErrorsMessage = new ArrayList<>();
+		for(FieldError fe : fieldErrors) {
+			fieldErrorsMessage.add(fe.getDefaultMessage());
+		}
+		
+		return new ResponseEntity<>(errorDetail, null, HttpStatus.BAD_REQUEST);
+	}	
 }

@@ -1,10 +1,8 @@
 package com.paypal.bfs.test.employeeserv.test;
 
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,17 +15,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.paypal.bfs.test.employeeserv.api.model.Address;
 import com.paypal.bfs.test.employeeserv.api.model.Employee;
-import com.paypal.bfs.test.employeeserv.domain.AddressEntity;
-import com.paypal.bfs.test.employeeserv.domain.EmployeeEntity;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -38,6 +32,8 @@ public class EmployeeTest {
 	
 	Employee employee;
 	
+	Employee employeeDuplicate;
+
 	Employee employeeWithoutAddress;
 	
 	Employee employeeInvalid;
@@ -46,6 +42,13 @@ public class EmployeeTest {
 
 	@BeforeEach
 	public void setup() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		Date birthDate = null;
+		try {
+			birthDate = sdf.parse("22-01-1990");
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 		Address address = new Address();
 		address.setLine1("line1");
 		address.setCity("city");
@@ -66,22 +69,29 @@ public class EmployeeTest {
 		employee = new Employee();
 		employee.setFirstName("firstName");
 		employee.setLastName("lastName");
-		employee.setDateOfBirth("22/01/1990");
+		employee.setDateOfBirth(birthDate);
 		employee.setAddress(addresses);
+		
+		employeeDuplicate = new Employee();
+		employeeDuplicate.setFirstName("firstName3");
+		employeeDuplicate.setLastName("lastName3");
+		employeeDuplicate.setDateOfBirth(birthDate);
+		employeeDuplicate.setAddress(addresses);
+		
 
 		employeeWithoutAddress = new Employee();
 		employeeWithoutAddress.setFirstName("firstName1");
 		employeeWithoutAddress.setLastName("lastName1");
-		employeeWithoutAddress.setDateOfBirth("22/01/1990");
+		employeeWithoutAddress.setDateOfBirth(birthDate);
 
 		employeeInvalid = new Employee();
 		employeeInvalid.setFirstName("firstName2");
-		employeeInvalid.setDateOfBirth("22/01/1990");
+		employeeInvalid.setDateOfBirth(birthDate);
 		
 		employeeWithInvalidAddress = new Employee();
-		employeeWithInvalidAddress.setFirstName("firstName");
-		employeeWithInvalidAddress.setLastName("lastName");
-		employeeWithInvalidAddress.setDateOfBirth("22/01/1990");
+		employeeWithInvalidAddress.setFirstName("firstName4");
+		employeeWithInvalidAddress.setLastName("lastName4");
+		employeeWithInvalidAddress.setDateOfBirth(birthDate);
 		employeeWithInvalidAddress.setAddress(invalidAddresses);
 	}
 	
@@ -187,13 +197,13 @@ public class EmployeeTest {
 			mockMvc.perform(
 		            MockMvcRequestBuilders.post("/v1/bfs/employees")
 		                    .contentType(MediaType.APPLICATION_JSON)
-		                    .content(mapper.writeValueAsString(employee)))
+		                    .content(mapper.writeValueAsString(employeeDuplicate)))
 		            .andExpect(status().isCreated());		    
 			
 			mockMvc.perform(
 		            MockMvcRequestBuilders.post("/v1/bfs/employees")
 		                    .contentType(MediaType.APPLICATION_JSON)
-		                    .content(mapper.writeValueAsString(employee)))
+		                    .content(mapper.writeValueAsString(employeeDuplicate)))
 		            .andExpect(status().isConflict());		    
 
 		} catch(Exception e) {

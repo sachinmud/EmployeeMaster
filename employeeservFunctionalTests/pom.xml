@@ -11,12 +11,12 @@
 
     <artifactId>employeeservFunctionalTests</artifactId>
     <dependencies>
-        <dependency>
+         <dependency>
             <groupId>com.paypal.bfs.test</groupId>
             <artifactId>employeeservImplementation</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
+         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
@@ -24,7 +24,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>    
-        <dependency>
+         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>	
@@ -51,11 +51,14 @@
 		    <artifactId>mockito-junit-jupiter</artifactId>
 		</dependency>
    </dependencies>
-    <build>
+   <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
             </plugin>
         </plugins>
     </build>

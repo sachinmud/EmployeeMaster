@@ -3,6 +3,7 @@ package com.paypal.bfs.test.employeeserv.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.EntityNotFoundException;
@@ -10,9 +11,11 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.paypal.bfs.test.employeeserv.api.model.Address;
 import com.paypal.bfs.test.employeeserv.api.model.Employee;
@@ -27,6 +30,7 @@ import com.paypal.bfs.test.employeeserv.service.EmployeeService;
 import com.paypal.bfs.test.employeeserv.utils.EntityUtil;
 
 @Service
+@Transactional
 public class EmployeeServiceImpl implements EmployeeService {
 
 	@Autowired
@@ -39,18 +43,23 @@ public class EmployeeServiceImpl implements EmployeeService {
     private Validator validator;
 
 	SimpleDateFormat dtFormat = new SimpleDateFormat("dd/MM/yyyy");
+	
+	Logger logger = Logger.getLogger(EmployeeServiceImpl.class);
 
 	public Employee getEmployee(String employeeId) throws Exception {
 		
 		Employee employee = null;
+		EmployeeEntity empEntity = null;
 		
 		try {
-			EmployeeEntity empEntity = empRepository.getOne(Integer.parseInt(employeeId));
-			if(empEntity.getId() == null || empEntity.getId() == 0) {
+			Optional<EmployeeEntity> opempEntity = empRepository.findById(Integer.parseInt(employeeId));
+			if(opempEntity.isPresent()) {
+				empEntity = opempEntity.get();
+			}
+			else {
 				throw new ResourceNotFoundException("Employee not found");
 			}
 			employee = new EntityUtil<EmployeeEntity, Employee>().copyProperties(empEntity,  new Employee());
-			employee.setDateOfBirth(dtFormat.format(empEntity.getDateOfBirth()));
 			List<AddressEntity> addressEntities = addrRepository.findByEmployeeId(empEntity.getId());
 			if(addressEntities != null & addressEntities.size() > 0) {
 				List<Address> addresses = new ArrayList<Address>();
@@ -61,10 +70,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 				employee.setAddress(addresses);
 			}
 		} catch(ResourceNotFoundException e) {
+			logger.error(e);
 			throw e;
 		} catch(EntityNotFoundException e) {
+			logger.error(e);
 			throw new ResourceNotFoundException("Employee not found", e);
 		} catch(Exception e) {
+			logger.error(e);
 			throw new InternalServerErrorException(e);
 		}
 		
@@ -74,7 +86,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public Employee createEmployee(Employee employee)  throws Exception {
 		try {
 			EmployeeEntity empEntity = new EntityUtil<Employee, EmployeeEntity>().copyProperties(employee, new EmployeeEntity());
-			empEntity.setDateOfBirth(dtFormat.parse(employee.getDateOfBirth()));
 			validateEmployee(empEntity);
 			empEntity = empRepository.save(empEntity);
 			employee.setId(empEntity.getId());
@@ -89,10 +100,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 			}
 			
 		} catch(DataIntegrityViolationException e) {
+			logger.error(e);
 			throw new ResourceAlreadyExistsException("Employee already exists", e);
 		} catch(ConstraintViolationException e) {
+			logger.error(e);
 			throw e;
 		}catch(Exception e) {
+			logger.error(e);
 			throw new InternalServerErrorException(e);
 		}
 		
