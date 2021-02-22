@@ -24,7 +24,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "EMPLOYEE", uniqueConstraints = {@UniqueConstraint(columnNames={"FIRSTNAME", "LASTNAME", "DATEOFBIRTH"}, name = "UNIQUE_EMP")})
+@Table(name = "EMPLOYEE", uniqueConstraints = {@UniqueConstraint(columnNames={"FIRSTNAME", "LASTNAME"}, name = "UNIQUE_EMP")})
 public class EmployeeEntity implements Serializable {
 
 	@Id

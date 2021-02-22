@@ -55,7 +55,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 		ErrorDetail errorDetail = new ErrorDetail();
 		errorDetail.setTimeStamp(dtFormat.format(new Date()));
 		errorDetail.setTitle("Resource already exists");
-		errorDetail.setDetail(rae.getMessage());
+		errorDetail.setDetail("Resource with this First Name and Last Name already exists");
 		
 		return new ResponseEntity<>(errorDetail, null, HttpStatus.CONFLICT);
 	}	
