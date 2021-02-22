@@ -103,8 +103,7 @@ public class EmployeeTest {
 	}
 	
 	@Test
-	public void testCreateAndGetEmployee() {
-		try {
+	public void testCreateAndGetEmployee()  throws Exception {
 			
 			String test = mapper.writeValueAsString(employee);
 			MvcResult result = mockMvc.perform(
@@ -121,15 +120,10 @@ public class EmployeeTest {
 			.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isOk());
 			
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
 	}
 	
 	@Test
-	public void testCreateAndGetEmployeeWithoutAddress() {
-		try {
-			
+	public void testCreateAndGetEmployeeWithoutAddress() throws Exception {
 			MvcResult result = mockMvc.perform(
 		            MockMvcRequestBuilders.post("/v1/bfs/employees")
 		                    .contentType(MediaType.APPLICATION_JSON)
@@ -144,14 +138,10 @@ public class EmployeeTest {
 			.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isOk());
 			
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
 	}
 	
 	@Test
-	public void testCreateInvalidEmployee() {
-		try {
+	public void testCreateInvalidEmployee() throws Exception {
 			
 			mockMvc.perform(
 		            MockMvcRequestBuilders.post("/v1/bfs/employees")
@@ -159,44 +149,31 @@ public class EmployeeTest {
 		                    .content(mapper.writeValueAsString(employeeInvalid)))
 		            .andExpect(status().isBadRequest());
 		    
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Test
-	public void testCreateEmployeeWithInvalidAddress() {
-		try {
-			
-			mockMvc.perform(
+	public void testCreateEmployeeWithInvalidAddress() throws Exception {
+
+		mockMvc.perform(
 		            MockMvcRequestBuilders.post("/v1/bfs/employees")
 		                    .contentType(MediaType.APPLICATION_JSON)
 		                    .content(mapper.writeValueAsString(employeeWithInvalidAddress)))
 		            .andExpect(status().isBadRequest());
 		    
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Test
-	public void testEmployeeNotFound() {
-		try {
-			
-			this.mockMvc.perform(MockMvcRequestBuilders.get("/v1/bfs/employees/100"))
+	public void testEmployeeNotFound() throws Exception {
+
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/v1/bfs/employees/100"))
 			.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isNotFound());
 			
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
 
 	}
 	
 	@Test
-	public void testDuplicateEmployeeCreation() {
-		try {
-			
+	public void testDuplicateEmployeeCreation() throws Exception {
 			mockMvc.perform(
 		            MockMvcRequestBuilders.post("/v1/bfs/employees")
 		                    .contentType(MediaType.APPLICATION_JSON)
@@ -209,9 +186,6 @@ public class EmployeeTest {
 		                    .content(mapper.writeValueAsString(employeeDuplicate)))
 		            .andExpect(status().isConflict());		    
 
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 }

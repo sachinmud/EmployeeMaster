@@ -105,7 +105,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		} catch(ConstraintViolationException e) {
 			logger.error(e);
 			throw e;
-		}catch(Exception e) {
+		} catch(Exception e) {
 			logger.error(e);
 			throw new InternalServerErrorException(e);
 		}
