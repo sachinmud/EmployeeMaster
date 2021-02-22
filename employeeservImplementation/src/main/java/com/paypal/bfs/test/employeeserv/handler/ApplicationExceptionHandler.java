@@ -60,7 +60,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 		return new ResponseEntity<>(errorDetail, null, HttpStatus.CONFLICT);
 	}	
 
-	@ExceptionHandler(InternalServerErrorException.class)
+	@ExceptionHandler({InternalServerErrorException.class, Exception.class})
 	public ResponseEntity<?> handleResourceNotFoundException(InternalServerErrorException ise, HttpServletRequest request) {
 		
 		ErrorDetail errorDetail = new ErrorDetail();
